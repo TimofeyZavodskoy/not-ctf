@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Музей Сибирская береста</title>
     <style>
-        /* Базовые стили и переменные (цветовая схема beresta-museum.ru) */
         :root {
             --primary-color: #a8c0b0;
             --bg-light: #f6f9f7;
@@ -22,78 +21,66 @@
         a:hover { color: var(--primary-color); }
         ul { list-style: none; }
 
-        /* Контейнер */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* Шапка (Header) */
         header { background-color: var(--bg-light); padding: 20px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 24px; font-weight: bold; text-transform: uppercase; color: var(--primary-color); }
         .nav-menu { display: flex; gap: 30px; }
         .nav-menu li a { font-weight: 600; text-transform: uppercase; font-size: 14px; }
 
-        /* Кнопки */
         .btn { display: inline-block; padding: 15px 30px; background-color: var(--primary-color); color: var(--text-dark); border-radius: 30px; font-weight: bold; text-transform: uppercase; text-align: center; cursor: pointer; border: none; }
         .btn:hover { opacity: 0.8; }
         .btn-outline { background-color: transparent; border: 2px solid var(--primary-color); }
 
-        /* Плейсхолдеры для изображений */
         .img-placeholder { background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: var(--text-gray); border-radius: 15px; width: 100%; object-fit: cover; }
 
-        /* Секции */
         section { padding: 80px 0; }
         .section-white { background-color: var(--bg-white); }
         .section-title { font-size: 36px; text-align: center; margin-bottom: 20px; }
         .section-descr { font-size: 20px; text-align: center; max-width: 800px; margin: 0 auto 50px; color: var(--text-gray); }
 
-        /* Сетки (Гриды) */
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .card { background: var(--bg-white); border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; padding-bottom: 20px; transition: transform 0.3s;}
         .card:hover { transform: translateY(-5px); }
         .card .img-placeholder { height: 250px; border-radius: 15px 15px 0 0; }
         .card-title { font-size: 20px; margin: 20px 0 10px; font-weight: 600;}
 
-        /* Баннер на главной */
-        .hero { height: 80vh; background-color: var(--text-dark); color: var(--bg-white); display: flex; align-items: center; justify-content: center; text-align: center; }
+         .hero { height: 80vh; background-color: var(--text-dark); color: var(--bg-white); display: flex; align-items: center; justify-content: center; text-align: center; }
         .hero h1 { font-size: 52px; margin-bottom: 20px; color: var(--primary-color); }
 
-        /* Подвал (Footer) */
-        footer { background-color: var(--footer-bg); color: var(--bg-white); padding: 60px 0; }
+         footer { background-color: var(--footer-bg); color: var(--bg-white); padding: 60px 0; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
         .footer-grid h3 { color: var(--primary-color); margin-bottom: 20px; }
         .footer-grid ul li { margin-bottom: 10px; }
 
-        /* Контейнер для картинки */
-        .img-placeholder { 
+         .img-placeholder { 
             background-color: #e0e0e0; 
-            display: block; /* Убираем flex, чтобы картинка вела себя предсказуемо */
+            display: block;  
             width: 100%; 
             height: 250px; 
             border-radius: 15px 15px 0 0;
-            overflow: hidden; /* Прячем всё, что вылезает за закругленные углы */
+            overflow: hidden;  
         }
 
-        /* Сама картинка внутри контейнера */
-        .img-placeholder img {
+         .img-placeholder img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Магия здесь: фото заполнит блок без сплющивания */
+            object-fit: cover; 
             display: block;
-            transition: transform 0.4s ease; /* Плавная анимация для красоты */
+            transition: transform 0.4s ease; 
         }
 
-        /* Эффект увеличения фото при наведении на карточку (для "красоты") */
-        .card:hover .img-placeholder img {
+         .card:hover .img-placeholder img {
             transform: scale(1.08);
         }
 
         .secret {
-            font-size: 1; /* Скрываем текст, но он остается в DOM */
-            color: transparent; /* Делаем текст прозрачным */
+            font-size: 1;  
+            color: transparent;  
         }
 
-        /* SPA Контейнер */
-        #app { min-height: 60vh; }
+         #app { min-height: 60vh; }
     </style>
 </head>
 <body>
@@ -375,31 +362,24 @@
             `
         };
 
-        // Логика SPA-роутера
-        const appDiv = document.getElementById('app');
+         const appDiv = document.getElementById('app');
 
         function renderPage() {
-            // Получаем хеш (убираем '#'), по умолчанию ставим 'home'
-            let hash = window.location.hash.substring(1) || 'home';
+             let hash = window.location.hash.substring(1) || 'home';
             
-            // Если маршрут не найден, перенаправляем на главную
-            if (!templates[hash]) {
+             if (!templates[hash]) {
                 hash = 'home';
                 window.location.hash = 'home';
             }
 
-            // Рендерим HTML
-            appDiv.innerHTML = templates[hash];
+             appDiv.innerHTML = templates[hash];
             
-            // Прокручиваем наверх при смене страницы
-            window.scrollTo(0, 0);
+             window.scrollTo(0, 0);
         }
 
-        // Слушаем изменения хеша в адресной строке
-        window.addEventListener('hashchange', renderPage);
+         window.addEventListener('hashchange', renderPage);
 
-        // Инициализация при первой загрузке
-        renderPage();
+         renderPage();
         console.log("%c[System]%c Production build successful.", "color: green; font-weight: bold", "color: inherit");
 console.log("[Debug] Robots.txt check: OK. Security policy applied to /api/v1/internal/");
     </script>
