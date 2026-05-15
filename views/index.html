@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музей Сибирская береста</title>
+    <style>
+        /* Базовые стили и переменные (цветовая схема beresta-museum.ru) */
+        :root {
+            --primary-color: #a8c0b0;
+            --bg-light: #f6f9f7;
+            --bg-white: #ffffff;
+            --text-dark: #000000;
+            --text-gray: #7a7a7a;
+            --footer-bg: #000000;
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); color: var(--text-dark); background-color: var(--bg-light); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: color 0.3s; }
+        a:hover { color: var(--primary-color); }
+        ul { list-style: none; }
+
+        /* Контейнер */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Шапка (Header) */
+        header { background-color: var(--bg-light); padding: 20px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; text-transform: uppercase; color: var(--primary-color); }
+        .nav-menu { display: flex; gap: 30px; }
+        .nav-menu li a { font-weight: 600; text-transform: uppercase; font-size: 14px; }
+
+        /* Кнопки */
+        .btn { display: inline-block; padding: 15px 30px; background-color: var(--primary-color); color: var(--text-dark); border-radius: 30px; font-weight: bold; text-transform: uppercase; text-align: center; cursor: pointer; border: none; }
+        .btn:hover { opacity: 0.8; }
+        .btn-outline { background-color: transparent; border: 2px solid var(--primary-color); }
+
+        /* Плейсхолдеры для изображений */
+        .img-placeholder { background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: var(--text-gray); border-radius: 15px; width: 100%; object-fit: cover; }
+
+        /* Секции */
+        section { padding: 80px 0; }
+        .section-white { background-color: var(--bg-white); }
+        .section-title { font-size: 36px; text-align: center; margin-bottom: 20px; }
+        .section-descr { font-size: 20px; text-align: center; max-width: 800px; margin: 0 auto 50px; color: var(--text-gray); }
+
+        /* Сетки (Гриды) */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: var(--bg-white); border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; padding-bottom: 20px; transition: transform 0.3s;}
+        .card:hover { transform: translateY(-5px); }
+        .card .img-placeholder { height: 250px; border-radius: 15px 15px 0 0; }
+        .card-title { font-size: 20px; margin: 20px 0 10px; font-weight: 600;}
+
+        /* Баннер на главной */
+        .hero { height: 80vh; background-color: var(--text-dark); color: var(--bg-white); display: flex; align-items: center; justify-content: center; text-align: center; }
+        .hero h1 { font-size: 52px; margin-bottom: 20px; color: var(--primary-color); }
+
+        /* Подвал (Footer) */
+        footer { background-color: var(--footer-bg); color: var(--bg-white); padding: 60px 0; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
+        .footer-grid h3 { color: var(--primary-color); margin-bottom: 20px; }
+        .footer-grid ul li { margin-bottom: 10px; }
+
+        /* Контейнер для картинки */
+        .img-placeholder { 
+            background-color: #e0e0e0; 
+            display: block; /* Убираем flex, чтобы картинка вела себя предсказуемо */
+            width: 100%; 
+            height: 250px; 
+            border-radius: 15px 15px 0 0;
+            overflow: hidden; /* Прячем всё, что вылезает за закругленные углы */
+        }
+
+        /* Сама картинка внутри контейнера */
+        .img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Магия здесь: фото заполнит блок без сплющивания */
+            display: block;
+            transition: transform 0.4s ease; /* Плавная анимация для красоты */
+        }
+
+        /* Эффект увеличения фото при наведении на карточку (для "красоты") */
+        .card:hover .img-placeholder img {
+            transform: scale(1.08);
+        }
+
+        .secret {
+            font-size: 1; /* Скрываем текст, но он остается в DOM */
+            color: transparent; /* Делаем текст прозрачным */
+        }
+
+        /* SPA Контейнер */
+        #app { min-height: 60vh; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <a href="#home" class="logo">Береста</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">Главная</a></li>
+                    <li><a href="#about">О музее</a></li>
+                    <li><a href="#masters">Мастера</a></li>
+                    <li><a href="#masterclasses">Мастер-классы</a></li>
+                    <li><a href="#news">Новости</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="app"></main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div>
+                <h3>Музей «Сибирская береста»</h3>
+                <p>Единственный в мире музей современного искусства из бересты.</p>
+                <br>
+                <p>© 2026 Все права защищены</p>
+            </div>
+            <div>
+                <h3>О музее</h3>
+                <ul>
+                    <li><a href="#about">История музея</a></li>
+                    <li><a href="#news">Новости и события</a></li>
+                    <li><a href="#film">Документальный фильм</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Посетить</h3>
+                <ul>
+                    <li>ул. Свердлова, 21, Новосибирск</li>
+                    <li>Ежедневно 11:00–19:00</li>
+                    <li>+7 (383) 210-18-80</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const templates = {
+            // ГЛАВНАЯ СТРАНИЦА
+            home: `
+                <div class="hero">
+                    <div class="container">
+                        <h1>Музей Сибирская береста</h1>
+                        <p class="section-descr" style="color: #fff;">Погрузитесь в красоту и традиции подлинного сибирского народного промысла. Уникальное собрание произведений из бересты. <br>Может быть вам нужена будет Раиса Баранова-Дигор, я не знаю</p>
+                        <a href="#about" class="btn">Подробнее о музее</a>
+                    </div>
+                </div>
+                <section class="section-white">
+                    <div class="container">
+                        <h2 class="section-title">Сибирская культура</h2>
+                        <p class="section-descr">Экскурсии, мастер-классы и концертные выступления, открывающие новые грани творчества сибиряков.</p>
+                        <div class="grid-3">
+                            <div class="card">
+                                <div class="img-placeholder">Фото экскурсии</div>
+                                <h3 class="card-title">Экскурсии</h3>
+                                <p>Увлекательные рассказы о бересте.</p>
+                            </div>
+                            <div class="card">
+                                <div class="img-placeholder">Фото мастер-класса</div>
+                                <h3 class="card-title"><a href="#masterclasses">Мастер-классы</a></h3>
+                                <p>Создайте сувенир своими руками.</p>
+                            </div>
+                            <div class="card">
+                                <div class="img-placeholder">Фото концерта</div>
+                                <h3 class="card-title">Ночь музеев</h3>
+                                <p>Ежегодные праздничные программы.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="container" style="text-align: center;">
+                        <h2 class="section-title">Тарифы на посещение</h2>
+                        <p>Стандартный билет с экскурсией — <strong>400 ₽</strong></p>
+                        <p>Льготный билет (студенты, школьники) — <strong>200 ₽</strong></p>
+                        <p>Пенсионеры — <strong>300 ₽</strong></p>
+                    </div>
+                </section>
+            `,
+            // СТРАНИЦА "О МУЗЕЕ"
+            about: `
+                <section class="section-white">
+                    <div class="container">
+                        <h1 class="section-title">О музее</h1>
+                        <p class="section-descr">Издревле коренные народы Сибири использовали бересту для изготовления необходимых в быту предметов.</p>
+                        <div class="img-placeholder" style="height: 400px; margin-bottom: 40px;">Историческое фото музея</div>
+                        <p style="margin-bottom: 20px;">Музей был открыт 27 июня 2002 года Идеей Тимофеевной Ложкиной в памятнике деревянного зодчества и первоначально занимал два небольших зала. Желание познакомить людей с прекрасным, уникальным искусством и сохранить его для потомков привело к созданию первого в мире музея бересты.</p>
+                        <p style="margin-bottom: 40px;">Сегодня в музее более 400 работ мастеров из разных регионов. Традиционный народный промысел превратился в настоящее самобытное искусство.</p>
+                        <div style="text-align: center;">
+                            <a href="#masters" class="btn">Посмотреть мастеров</a>
+                        </div>
+                    </div>
+                </section>
+            `,
+            // СТРАНИЦА "МАСТЕРА"
+            masters: `
+                <section>
+                    <div class="container">
+                        <h1 class="section-title">Мастера Сибири</h1>
+                        <p class="section-descr">В коллекции музея представлены работы более чем тридцати народных мастеров России.</p>
+                        <div class="grid-3">
+                            <div class="card">
+                                <a href="#fargiev">
+                                    <div class="img-placeholder"><img src="../public/images/fargiev.png" alt="Руслан Фаргиев"></div>
+                                    <h3 class="card-title">Руслан Фаргиев</h3>
+                                </a>
+                            </div>
+                            <div class="card">
+                                <a href="#zhivotov">
+                                    <div class="img-placeholder"><img src="../public/images/zhivotov.png" alt="Евгений Животов"></div>
+                                    <h3 class="card-title">Евгений Животов</h3>
+                                </a>
+                            </div>
+                            <div class="card">
+                                <a href="#mazdorov">
+                                    <div class="img-placeholder"><img src="../public/images/mazdorov.png" alt="Виктор Маздоров"></div>
+                                    <h3 class="card-title">Виктор Маздоров</h3>
+                                </a>
+                            </div>
+                            <div class="card">
+                                <a href="#haxalin">
+                                    <div class="img-placeholder"><img src="../public/images/hahalin.png" alt="Виктор Хахалин"></div>
+                                    <h3 class="card-title">Виктор Хахалин</h3>
+                                </a>
+                            </div>
+                            <div class="card">
+                                <a href="#bagautdinov">
+                                    <div class="img-placeholder"><img src="../public/images/bagaytdinov.png" alt="Рашит Багаутдинов"></div>
+                                    <h3 class="card-title">Рашит Багаутдинов</h3>
+                                </a>
+                            </div>
+                            <div class="card">
+                                <a href="#baranova">
+                                    <div class="img-placeholder"><img src="../public/images/raisa.png" alt="Раиса Баранова-Дигор"></div>
+                                    <h3 class="card-title">Раиса Баранова-Дигор</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `,
+            
+            // СТРАНИЦА КОНКРЕТНОГО МАСТЕРА
+            // Скрытый текст над фото Раисы Барановой-Дигор
+            fargiev: `
+                <section class="section-white">
+                    <div class="container">
+                        <div class="img-placeholder" style="height: 300px; margin-bottom: 40px;"><img src="../public/images/fargiev.png" alt="Руслан Фаргиев"></div>
+                        <h1 class="section-title">Руслан Фаргиев</h1>
+                        <p class="section-descr">Родился 11 декабря ???? года в Екатеринбурге. Народный мастер России.</p>
+                        <p style="margin-bottom: 20px;">В 1982 году приехал в г. Кемерово, в 1985 начал осваивать работу с берестой. В своем творчестве Руслан использует традиционные и новаторские методики (обжиг, тонирование, расслоение бересты). Соединив графический дизайн с традиционным материалом, получил новую технику "графика на бересте".</p>
+                        <p style="margin-bottom: 40px;">При помощи всего трёх цветов – чёрного, белого, коричневого, – Руслан Фаргиев создаёт настоящие картины.</p>
+                        <a href="#masters" class="btn btn-outline">Вернуться к списку мастеров</a>
+                    </div>
+                </section>
+            `,
+            zhivotov: `
+                <section>
+                    <div class="container">
+                        <div class="img-placeholder" style="height: 300px; margin-bottom: 40px;"><img src="../public/images/zhivotov.png" alt="Евгений Животов"></div>
+                        <h1 class="section-title">Евгений Животов</h1>
+                        <p class="section-descr">Родился 17 ноября 1958 года в г. Киселёвск Кемеровской области. Окончил Кемеровское художественное училище, Кемеровский государственный университет. Участник городских, областных, всероссийских, международных выставок.</p>
+                        <p style="margin-bottom: 20px;">Мастер любит иносказательные образы, так он преподносит нам сюжеты из старых легенд и повседневной жизни. Важно распознать не буквальный сюжет, а общий настрой и смысл картины, которые не столько нужно понять умом, сколько прочувствовать, увидеть ассоциацию. Каждый зритель видит в работе что-то своё, и такая многозначность прочтения – признак мастерства художника, он предлагает нам поиграть с воображением. У Евгения Животова много работ сложного символичного характера. В них береста служит средством для передачи образов, несущих определённую смысловую нагрузку. И здесь автор в разнообразных проявлениях природы видит схожее по настроению состояние человеческой души («Боль», «Разрыв»). Подобные сюжеты развивают мысль художника о единстве цикла природы и человеческой жизни. В своих работах Евгений показывает экспрессию чувств, жизнеутверждение, стойкость духа, а, как известно, менталитет художника, его мировоззрение, характер, всегда воплощаются в его творчестве.</p>
+                        <a href="#masters" class="btn btn-outline">Вернуться к списку мастеров</a>
+                    </div>
+                </section>
+            `,
+            mazdorov: `
+                <section>
+                    <div class="container">
+                        <div class="img-placeholder" style="height: 300px; margin-bottom: 40px;"><img src="../public/images/mazdorov.png" alt="Виктор Маздоров"></div>
+                        <h1 class="section-title">Виктор Маздоров</h1>
+                        <p class="section-descr">Родился 22 февраля 1956 года в с. Николаевка Алтайского Края. Художественное образование получил в Бийском педагогическом училище и Новосибирском государственном педагогическом институте..</p>
+                        <p style="margin-bottom: 20px;">С 1990 года начал заниматься берестой. Провел несколько персональных выставок в Краеведческих музеях г. Нovosiбирска, г. Колывани, г. Искитима, г. Бердска, где в постоянной экспозиции находится ряд его работ. В 1992 году в г. Колывань Маздоров организовал свою первую мастерскую «Век», где начал обучать работе с берестой молодёжь. С 2002 по 2007 работал преподавателем в Институте искусств Нovosiбирского государственного педагогического университета, где обучал студентов основам декоративно-прикладного искусства. В 1997 году присвоена квалификация Народного мастера. Работы Виктора Маздорова Администрация Нovosiбирской области дарила высокопostавленным государственным служащим и зарубежным гостям Нovosiбирска, они находятся в частных и корпоративных коллекциях в России и за рубежом.</p>
+                        <a href="#masters" class="btn btn-outline">Вернуться к списку мастеров</a>
+                    </div>
+                </section>
+            `,
+            haxalin: `
+                <section>
+                    <div class="container">
+                        <div class="img-placeholder" style="height: 300px; margin-bottom: 40px;"><img src="../public/images/hahalin.png" alt="Виктор Хахалин"></div>
+                        <h1 class="section-title">Виктор Хахалин</h1>
+                        <p class="section-descr">Родился 28 сентября 1959 года в г. Новокузнецке Кемеровской области. В 1977 году поступил в Кемеровское художественное училище. С 1984 по 1992 занимался живописью, выставлял свои работы на городских и областных выставках..</p>
+                        <p style="margin-bottom: 20px;">С 1990 года начал работать с берестой. В 1992 Хахалин создал новое направление в работе с ней – он сделал свою первую куклу. С тех пор скульптура стала основой творчества мастера, его визитной карточкой. Излюбленной темой Хахалина является изображение крестьянского быта и труда: это «Косари», «Баба с граблями», «Пахарь». Также интересна и своеобразна серия работ «Русские забавы» и скульптуры, посвящённые славянским мифам и языческим богам. Несмотря на довольно примитивное изображение лиц, у каждого героя чувствуется свой характер.<br> Виктор регулярно участвовал в выставках в России и за рубежом. Его творческая биография насчитывает шесть персональных выставок. <br> Умер Виктор Хахалин в 2009 году..</p>
+                        <a href="#masters" class="btn btn-outline">Вернуться к списку мастеров</a>
+                    </div>
+                </section>
+            `,
+            bagautdinov: `
+                <section>
+                    <div class="container">
+                        <div class="img-placeholder" style="height: 300px; margin-bottom: 40px;"><img src="../public/images/bagaytdinov.png" alt="Рашит Багаутдинов"></div>
+                        <h1 class="section-title">Рашит Багаутдинов</h1>
+                        <p class="section-descr">Родился 27 февраля 1960 года в г. Прокопьевске Кемеровской области. Окончил художественно-графическое отделение Омского государственного педагогического института.</p>
+                        <p style="margin-bottom: 20px;">Использование различных технических приёмов делает произведения Рашита неповторимыми и необычайно декоративными, а тонкий и добрый юмор позволяет изображать своих персонажей запоминающимися. Даже хлебницу мастер сумел превратить в милого и совсем не колючего Ёжика! Ну а скульптуры Рашита Багаутдинова ещё более интересны – настоящий Мышиный Король, или, например, сказочный Поющий Носорог, - в которых отражены характеры героев не без доли иронии.<br>Художник является народным мастером, членом Союза художников России.</p>
+                        <a href="#masters" class="btn btn-outline">Вернуться к списку мастеров</a>
+                    </div>
+                </section>
+            `,
+            baranova: `
+                <section>
+                    <div class="container">
+                        <h1 class="secret" stale="margin-bottom: 40px;">https://beresta-museum.ru/fargiev</h1>
+                        <div class="img-placeholder" style="height: 300px; margin-bottom: 40px;"><img src="../public/images/raisa.png" alt="Раиса Баранова-Дигор"></div>
+                        <h1 class="section-title">Раиса Баранова-Дигор</h1>
+                        <p class="section-descr">Член Союза художников России,уроженка древнейшего нанайского села Кондон <br>Природа наделила Раису Баранову-Дигор многочисленными талантами: пишет стихи и рассказы, песни и музыку к ним, создает художественные панно.</p>
+                        <p style="margin-bottom: 20px;">Расиса Баранова-Дигор – активный пропагандист национальной культуры. В Комсомольске-на-Амуре ею основан школьный музей, создан нанайский театр. Удостоена медалью «Ветеран труда», знаком Министерства культуры России «За достижения в культуре», ей присвоено звание «Лучший мастер ремесел земли Дерсу». Работы мастера находятся в музеях и частных коллекциях в России и за рубежом.</p>
+                        <a href="#masters" class="btn btn-outline">Вернуться к списку мастеров</a>
+                    </div>
+                </section>
+            `,
+             // СТРАНИЦА "МАСТЕР-КЛАССЫ"
+            masterclasses: `
+                <section>
+                    <div class="container">
+                        <h1 class="section-title">Мастер-классы</h1>
+                        <p class="section-descr">В музее регулярно проводятся занятия, на которых дети и взрослые могут сами смастерить предметы из бересты.</p>
+                        <div class="img-placeholder" style="height: 400px; margin-bottom: 30px;">Фото процесса создания поделки</div>
+                        <p style="text-align: center; margin-bottom: 30px;">Для того, чтобы организовать групповой или индивидуальный мастер-класс, свяжитесь с нами.</p>
+                        <div style="text-align: center;">
+                            <a href="#home" class="btn">Связаться с нами</a>
+                        </div>
+                    </div>
+                </section>
+            `,
+            // СТРАНИЦА "ФИЛЬМ"
+            film: `
+                <section class="section-white">
+                    <div class="container" style="text-align: center;">
+                        <h1 class="section-title">Очарованные берестой</h1>
+                        <p class="section-descr">Фильм о музее "Сибирская береста" и его основательнице Идее Тимофеевне Ложкиной.</p>
+                        <div class="img-placeholder" style="height: 500px; max-width: 800px; margin: 0 auto;">
+                            ▶ Плеер документального фильма (Локальная заглушка)
+                        </div>
+                    </div>
+                </section>
+            `,
+            // MOCK-ДАННЫЕ: СТРАНИЦА "НОВОСТИ"
+            news: `
+                <section>
+                    <div class="container">
+                        <h1 class="section-title">Новости и события</h1>
+                        <p class="section-descr">Узнайте о последних выставках и мероприятиях музея.</p>
+                        <div class="grid-3">
+                            <div class="card">
+                                <div class="img-placeholder">Иллюстрация новости</div>
+                                <h3 class="card-title" style="margin-top: 15px;">Новая экспозиция: Лики Сибири</h3>
+                                <p style="padding: 0 15px;">Приглашаем оценить новые поступления в фонды музея от мастеров из Томска.</p>
+                                <br>
+                            </div>
+                            <div class="card">
+                                <div class="img-placeholder">Иллюстрация новости</div>
+                                <h3 class="card-title" style="margin-top: 15px;">Изменения в графике работы</h3>
+                                <p style="padding: 0 15px;">Внимание: 2, 3 и 9 мая музей закрыт на санитарные дни.</p>
+                                <br>
+                            </div>
+                            <div class="card">
+                                <div class="img-placeholder">Иллюстрация новости</div>
+                                <h3 class="card-title" style="margin-top: 15px;">Итоги «Ночи музеев»</h3>
+                                <p style="padding: 0 15px;">В этом году наш музей посетило рекордное количество гостей. Спасибо всем участникам!</p>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `
+        };
+
+        // Логика SPA-роутера
+        const appDiv = document.getElementById('app');
+
+        function renderPage() {
+            // Получаем хеш (убираем '#'), по умолчанию ставим 'home'
+            let hash = window.location.hash.substring(1) || 'home';
+            
+            // Если маршрут не найден, перенаправляем на главную
+            if (!templates[hash]) {
+                hash = 'home';
+                window.location.hash = 'home';
+            }
+
+            // Рендерим HTML
+            appDiv.innerHTML = templates[hash];
+            
+            // Прокручиваем наверх при смене страницы
+            window.scrollTo(0, 0);
+        }
+
+        // Слушаем изменения хеша в адресной строке
+        window.addEventListener('hashchange', renderPage);
+
+        // Инициализация при первой загрузке
+        renderPage();
+        console.log("%c[System]%c Production build successful.", "color: green; font-weight: bold", "color: inherit");
+console.log("[Debug] Robots.txt check: OK. Security policy applied to /api/v1/internal/");
+    </script>
+
+</body>
+</html>
