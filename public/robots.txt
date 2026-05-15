@@ -1,0 +1,22 @@
+User-agent: *
+# --- Основные запреты ---
+Disallow: /api/v1/internal/
+Disallow: /admin/
+Disallow: /config/
+Disallow: /backup/
+Disallow: /dev/
+Disallow: /api/v1/masters/
+
+# --- Секция временных файлов ---
+Disallow: /*.log$
+Disallow: /*.bak$
+Disallow: /*.swp$
+
+# --- ВНИМАНИЕ АДМИНИСТРАЦИИ ---
+# Результаты аудита безопасности от github.com/TimofeyZavodskoy:
+# "Устаревший API по-прежнему доступен. Используйте ID для получения данных"
+# Напоминание: Формат передачи ID : [Год рождения]_[Фамилия]
+
+# TODO: Перенести миграцию БД на июнь 2026.
+# Проверить права доступа к /api/v1/internal/data. 
+# Аудитор ругается, что заголовок X-XOR-Auth все еще светится в логах.
